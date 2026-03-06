@@ -345,7 +345,7 @@ if (senhaDigitada !== senhaCorreta) {
             <div class="card-sub">${interessados} de ${total} respondentes</div>
           </div>
           <div class="card">
-            <div class="card-label">Faixa de Preco Mais Votada</div>
+            <div class="card-label">Faixa de Preço Mais Votada</div>
             <div class="card-valor" style="font-size:1.5rem">${precoTop}</div>
           </div>
           <div class="card">
@@ -357,15 +357,15 @@ if (senhaDigitada !== senhaCorreta) {
         <!-- Graficos -->
         <div class="graficos-grid">
           <div class="grafico-box">
-            <h3>Distribuicao por Faixa Etaria</h3>
+            <h3>Distribuição por Faixa Etária</h3>
             <div class="grafico-container"><canvas id="chart-etaria"></canvas></div>
           </div>
           <div class="grafico-box">
-            <h3>Frequencia de Compra de Ovos</h3>
+            <h3>Frequência de Compra de Ovos</h3>
             <div class="grafico-container"><canvas id="chart-frequencia"></canvas></div>
           </div>
           <div class="grafico-box">
-            <h3>Faixa de Preco Aceitavel por Duzia</h3>
+            <h3>Faixa de Preço Justo por Dúzia</h3>
             <div class="grafico-container"><canvas id="chart-preco"></canvas></div>
           </div>
           <div class="grafico-box">
@@ -385,22 +385,43 @@ if (senhaDigitada !== senhaCorreta) {
             <div class="grafico-container"><canvas id="chart-conceito"></canvas></div>
           </div>
           <div class="grafico-box">
-            <h3>Canal de Comunicacao Preferido</h3>
+            <h3>Canal de Comunicação Preferido</h3>
             <div class="grafico-container"><canvas id="chart-canal"></canvas></div>
           </div>
         </div>
 
-        <!-- Tabela -->
-        <div class="tabela-box">
-          <h3>Ultimas 20 Respostas</h3>
+        <!-- Respostas escritas -->
+        <div class="tabela-box" style="margin-bottom: 20px;">
+          <h3>Respostas Escritas (Outros / Raramente / Comentários)</h3>
           <div style="overflow-x:auto">
             <table>
               <thead>
                 <tr>
                   <th>Data/Hora</th>
-                  <th>Cidade</th>
-                  <th>Faixa Etaria</th>
-                  <th>Interesse Assinatura</th>
+                  <th>Nome</th>
+                  <th>Campo</th>
+                  <th>Resposta</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-escritas"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="tabela-box">
+          <h3>Últimas 20 Respostas</h3>
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nome</th>
+                  <th>Bairro</th>
+                  <th>Faixa Etária</th>
+                  <th>Interesse</th>
+                  <th>WhatsApp</th>
+                  <th>E-mail</th>
                   <th>Quer Aviso</th>
                 </tr>
               </thead>
@@ -420,16 +441,45 @@ if (senhaDigitada !== senhaCorreta) {
       renderizarGrafico(contarValores(dados, 'conceito_marca'), 'chart-conceito', 'doughnut');
       renderizarGrafico(contarValores(dados, 'canal_comunicacao'), 'chart-canal', 'bar');
 
-      // Preencher tabela (ultimas 20)
+      // Preencher tabela de respostas escritas
+      const tbodyEscritas = document.getElementById('tabela-escritas');
+      const camposEscritos = [
+        { campo: 'frequencia_raramente_texto', label: 'Por quê raramente' },
+        { campo: 'frustracao_outros_texto', label: 'Frustração (outros)' },
+        { campo: 'importancia_outros_texto', label: 'Importância (outros)' },
+        { campo: 'comentarios', label: 'Comentários' }
+      ];
+      dados.forEach(d => {
+        camposEscritos.forEach(({ campo, label }) => {
+          if (d[campo]) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${formatarData(d.created_at)}</td>
+              <td>${d.nome || '-'}</td>
+              <td>${label}</td>
+              <td>${d[campo]}</td>
+            `;
+            tbodyEscritas.appendChild(tr);
+          }
+        });
+      });
+      if (tbodyEscritas.children.length === 0) {
+        tbodyEscritas.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888">Nenhuma resposta escrita ainda</td></tr>';
+      }
+
+      // Preencher tabela principal (últimas 20)
       const tbody = document.getElementById('tabela-body');
       const ultimas = dados.slice(0, 20);
       ultimas.forEach(d => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${formatarData(d.created_at)}</td>
-          <td>${d.cidade || '-'}</td>
+          <td>${d.nome || '-'}</td>
+          <td>${d.bairro || '-'}</td>
           <td>${d.faixa_etaria || '-'}</td>
           <td>${d.interesse_assinatura || '-'}</td>
+          <td>${d.whatsapp || '-'}</td>
+          <td>${d.email || '-'}</td>
           <td>${d.quer_aviso || '-'}</td>
         `;
         tbody.appendChild(tr);
