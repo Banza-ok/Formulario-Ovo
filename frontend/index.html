@@ -599,8 +599,9 @@
             <label class="pill"><input type="radio" name="frequencia_compra" value="Toda semana"><span>Toda semana</span></label>
             <label class="pill"><input type="radio" name="frequencia_compra" value="A cada 2 semanas"><span>A cada 2 semanas</span></label>
             <label class="pill"><input type="radio" name="frequencia_compra" value="Mensalmente"><span>Mensalmente</span></label>
-            <label class="pill"><input type="radio" name="frequencia_compra" value="Raramente"><span>Raramente</span></label>
+            <label class="pill"><input type="radio" name="frequencia_compra" value="Raramente" id="frequencia_raramente"><span>Raramente</span></label>
           </div>
+          <input type="text" id="frequencia_raramente_texto" name="frequencia_raramente_texto" placeholder="Por quê você compra raramente?" style="display:none; margin-top: 10px;">
         </div>
 
         <div class="campo">
@@ -898,6 +899,19 @@
     form.addEventListener('change', atualizarProgresso);
     form.addEventListener('input', atualizarProgresso);
 
+    // Toggle "Raramente" text field
+    document.querySelectorAll('input[name="frequencia_compra"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        const campo = document.getElementById('frequencia_raramente_texto');
+        if (this.value === 'Raramente') {
+          campo.style.display = 'block';
+        } else {
+          campo.style.display = 'none';
+          campo.value = '';
+        }
+      });
+    });
+
     // Toggle "Outros" text fields
     document.getElementById('frustracao_outros_check').addEventListener('change', function() {
       document.getElementById('frustracao_outros_texto').style.display = this.checked ? 'block' : 'none';
@@ -927,6 +941,7 @@
       dados.whatsapp = form.querySelector('#whatsapp').value.trim() || null;
       dados.email = form.querySelector('#email').value.trim() || null;
       dados.comentarios = form.querySelector('#comentarios').value.trim() || null;
+      dados.frequencia_raramente_texto = form.querySelector('#frequencia_raramente_texto').value.trim() || null;
       dados.frustracao_outros_texto = form.querySelector('#frustracao_outros_texto').value.trim() || null;
       dados.importancia_outros_texto = form.querySelector('#importancia_outros_texto').value.trim() || null;
 
