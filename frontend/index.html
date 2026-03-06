@@ -790,8 +790,13 @@
         </div>
 
         <div class="campo">
-          <label class="campo-label" for="contato">WhatsApp ou e-mail <small>(opcional)</small></label>
-          <input type="text" id="contato" name="contato" placeholder="Ex: (11) 99999-0000 ou email@exemplo.com">
+          <label class="campo-label" for="whatsapp">WhatsApp <small>(opcional)</small></label>
+          <input type="text" id="whatsapp" name="whatsapp" placeholder="Ex: (11) 99999-0000">
+        </div>
+
+        <div class="campo">
+          <label class="campo-label" for="email">E-mail <small>(opcional)</small></label>
+          <input type="text" id="email" name="email" placeholder="Ex: email@exemplo.com">
         </div>
 
         <div class="campo">
@@ -919,7 +924,8 @@
 
       dados.bairro = form.querySelector('#bairro').value.trim();
       dados.nome = form.querySelector('#nome').value.trim() || null;
-      dados.contato = form.querySelector('#contato').value.trim() || null;
+      dados.whatsapp = form.querySelector('#whatsapp').value.trim() || null;
+      dados.email = form.querySelector('#email').value.trim() || null;
       dados.comentarios = form.querySelector('#comentarios').value.trim() || null;
       dados.frustracao_outros_texto = form.querySelector('#frustracao_outros_texto').value.trim() || null;
       dados.importancia_outros_texto = form.querySelector('#importancia_outros_texto').value.trim() || null;
