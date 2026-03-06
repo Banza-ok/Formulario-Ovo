@@ -15,11 +15,11 @@ const ARRAY_FIELDS = ['onde_compra', 'frustracao', 'importancia', 'canal_comunic
 
 // Campos obrigatórios
 const REQUIRED_FIELDS = [
-  'faixa_etaria', 'cidade', 'pessoas_casa', 'renda_familiar',
+  'faixa_etaria', 'bairro', 'pessoas_casa',
   'frequencia_compra', 'quantidade_ovos', 'onde_compra', 'gasto_mensal',
   'frustracao', 'importancia',
   'usou_assinatura', 'interesse_assinatura', 'frequencia_entrega', 'tamanho_kit',
-  'preco_duzia', 'frete_aceitavel',
+  'preco_duzia',
   'conceito_marca', 'canal_comunicacao',
   'quer_aviso'
 ];
