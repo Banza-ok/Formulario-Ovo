@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa - Ovos por Assinatura</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fdfaf6;
+      color: #3a2e1f;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #c2703a;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 1rem;
+      color: #7a6b5d;
+    }
+
+    .bloco {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .bloco h2 {
+      font-size: 1.1rem;
+      color: #c2703a;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f5e6d3;
+    }
+
+    .campo {
+      margin-bottom: 20px;
+    }
+
+    .campo:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    label .obrigatorio {
+      color: #e05555;
+      margin-left: 2px;
+    }
+
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e8ddd0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fdfaf6;
+      color: #3a2e1f;
+      transition: border-color 0.2s;
+    }
+
+    select:focus, input[type="text"]:focus, textarea:focus {
+      outline: none;
+      border-color: #c2703a;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .opcoes-grupo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .opcao-radio, .opcao-check {
+      position: relative;
+    }
+
+    .opcao-radio input, .opcao-check input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .opcao-radio span, .opcao-check span {
+      display: inline-block;
+      padding: 8px 16px;
+      border: 2px solid #e8ddd0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      background: #fff;
+      user-select: none;
+    }
+
+    .opcao-radio input:checked + span {
+      background: #c2703a;
+      color: #fff;
+      border-color: #c2703a;
+    }
+
+    .opcao-check input:checked + span {
+      background: #d4a574;
+      color: #fff;
+      border-color: #d4a574;
+    }
+
+    .opcao-radio span:hover, .opcao-check span:hover {
+      border-color: #c2703a;
+    }
+
+    .btn-enviar {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: #c2703a;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-enviar:hover {
+      background: #a85d2f;
+    }
+
+    .btn-enviar:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .mensagem-sucesso {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .mensagem-sucesso h2 {
+      color: #4caf50;
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    .mensagem-sucesso p {
+      color: #7a6b5d;
+    }
+
+    .erro-campo {
+      border-color: #e05555 !important;
+    }
+
+    .erro-texto {
+      color: #e05555;
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 20px 14px 40px; }
+      header h1 { font-size: 1.5rem; }
+      .bloco { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Pesquisa: Ovos por Assinatura</h1>
+      <p>Nos ajude a criar o melhor serviço de entrega de ovos frescos para voce. Leva menos de 3 minutos!</p>
+    </header>
+
+    <form id="formulario">
+
+      <!-- BLOCO 1: Perfil -->
+      <div class="bloco">
+        <h2>Sobre voce</h2>
+
+        <div class="campo">
+          <label>Faixa etaria <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="faixa_etaria" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="18-24"><span>18-24</span></label>
+            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="25-34"><span>25-34</span></label>
+            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="35-44"><span>35-44</span></label>
+            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="45-54"><span>45-54</span></label>
+            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="55+"><span>55+</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="cidade">Cidade <span class="obrigatorio">*</span></label>
+          <input type="text" id="cidade" name="cidade" placeholder="Ex: Sao Paulo">
+        </div>
+
+        <div class="campo">
+          <label>Quantas pessoas moram na sua casa? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="pessoas_casa" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="1"><span>1</span></label>
+            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="2"><span>2</span></label>
+            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="3-4"><span>3-4</span></label>
+            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="5+"><span>5+</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Renda familiar <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="renda_familiar" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="Ate R$3k"><span>Ate R$3k</span></label>
+            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="R$3k-6k"><span>R$3k-6k</span></label>
+            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="R$6k-10k"><span>R$6k-10k</span></label>
+            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="Acima de R$10k"><span>Acima de R$10k</span></label>
+            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="Prefiro nao informar"><span>Prefiro nao informar</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 2: Habitos -->
+      <div class="bloco">
+        <h2>Seus habitos com ovos</h2>
+
+        <div class="campo">
+          <label>Com que frequencia voce compra ovos? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="frequencia_compra" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="Toda semana"><span>Toda semana</span></label>
+            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="A cada 2 semanas"><span>A cada 2 semanas</span></label>
+            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="Mensalmente"><span>Mensalmente</span></label>
+            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="Raramente"><span>Raramente</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Quantos ovos consome por semana? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="quantidade_ovos" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="Menos de 6"><span>Menos de 6</span></label>
+            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="6-12"><span>6-12</span></label>
+            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="13-24"><span>13-24</span></label>
+            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="Mais de 24"><span>Mais de 24</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Onde voce compra ovos atualmente? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <div class="opcoes-grupo" data-name="onde_compra" data-type="checkbox">
+            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Supermercado grande"><span>Supermercado grande</span></label>
+            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Mercado de bairro"><span>Mercado de bairro</span></label>
+            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Feira livre"><span>Feira livre</span></label>
+            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Delivery"><span>Delivery</span></label>
+            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Direto do produtor"><span>Direto do produtor</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Quanto gasta por mes com ovos? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="gasto_mensal" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="Ate R$20"><span>Ate R$20</span></label>
+            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="R$20-40"><span>R$20-40</span></label>
+            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="R$40-70"><span>R$40-70</span></label>
+            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="Mais de R$70"><span>Mais de R$70</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 3: Dores -->
+      <div class="bloco">
+        <h2>Suas dores e prioridades</h2>
+
+        <div class="campo">
+          <label>Qual sua maior frustracao na compra de ovos? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <div class="opcoes-grupo" data-name="frustracao" data-type="checkbox">
+            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Esqueco de comprar"><span>Esqueco de comprar</span></label>
+            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Qualidade inconsistente"><span>Qualidade inconsistente</span></label>
+            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Nao sei a origem"><span>Nao sei a origem</span></label>
+            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Preco imprevisivel"><span>Preco imprevisivel</span></label>
+            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Falta de variedade"><span>Falta de variedade</span></label>
+            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Nenhuma"><span>Nenhuma</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>O que mais importa ao escolher ovos? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <div class="opcoes-grupo" data-name="importancia" data-type="checkbox">
+            <label class="opcao-check"><input type="checkbox" name="importancia" value="Preco"><span>Preco</span></label>
+            <label class="opcao-check"><input type="checkbox" name="importancia" value="Frescor"><span>Frescor</span></label>
+            <label class="opcao-check"><input type="checkbox" name="importancia" value="Origem"><span>Origem</span></label>
+            <label class="opcao-check"><input type="checkbox" name="importancia" value="Bem-estar animal"><span>Bem-estar animal</span></label>
+            <label class="opcao-check"><input type="checkbox" name="importancia" value="Organico"><span>Organico</span></label>
+            <label class="opcao-check"><input type="checkbox" name="importancia" value="Praticidade"><span>Praticidade</span></label>
+            <label class="opcao-check"><input type="checkbox" name="importancia" value="Embalagem sustentavel"><span>Embalagem sustentavel</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 4: Receptividade -->
+      <div class="bloco">
+        <h2>Assinatura de alimentos</h2>
+
+        <div class="campo">
+          <label>Ja usou algum servico de assinatura de alimentos? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="usou_assinatura" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Sim uso"><span>Sim, uso</span></label>
+            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Ja usei mas cancelei"><span>Ja usei mas cancelei</span></label>
+            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Nao mas tenho interesse"><span>Nao, mas tenho interesse</span></label>
+            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Nao tenho interesse"><span>Nao tenho interesse</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Teria interesse em receber ovos por assinatura? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="interesse_assinatura" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Sim"><span>Sim</span></label>
+            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Talvez"><span>Talvez</span></label>
+            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Provavelmente nao"><span>Provavelmente nao</span></label>
+            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Nao"><span>Nao</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Frequencia de entrega preferida <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="frequencia_entrega" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Semanal"><span>Semanal</span></label>
+            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Quinzenal"><span>Quinzenal</span></label>
+            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Mensal"><span>Mensal</span></label>
+            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Quero escolher"><span>Quero escolher</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Tamanho do kit preferido <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="tamanho_kit" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="6 ovos"><span>6 ovos</span></label>
+            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="12 ovos"><span>12 ovos</span></label>
+            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="30 ovos"><span>30 ovos</span></label>
+            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="Personalizado"><span>Personalizado</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 5: Preco -->
+      <div class="bloco">
+        <h2>Preco e frete</h2>
+
+        <div class="campo">
+          <label>Quanto pagaria por uma duzia entregue em casa? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="preco_duzia" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="Ate R$10"><span>Ate R$10</span></label>
+            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="R$10-15"><span>R$10-15</span></label>
+            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="R$15-20"><span>R$15-20</span></label>
+            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="R$20-25"><span>R$20-25</span></label>
+            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="Mais de R$25"><span>Mais de R$25</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Um frete de R$5 seria aceitavel? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="frete_aceitavel" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="frete_aceitavel" value="Sim"><span>Sim</span></label>
+            <label class="opcao-radio"><input type="radio" name="frete_aceitavel" value="Somente se gratis acima de certo valor"><span>Somente se gratis acima de certo valor</span></label>
+            <label class="opcao-radio"><input type="radio" name="frete_aceitavel" value="Nao pagaria frete"><span>Nao pagaria frete</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 6: Branding -->
+      <div class="bloco">
+        <h2>Marca e comunicacao</h2>
+
+        <div class="campo">
+          <label>Qual conceito de marca mais te atrai? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="conceito_marca" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Natural e artesanal"><span>Natural e artesanal</span></label>
+            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Premium e sofisticado"><span>Premium e sofisticado</span></label>
+            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Sustentavel e consciente"><span>Sustentavel e consciente</span></label>
+            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Pratico e confiavel"><span>Pratico e confiavel</span></label>
+            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Divertido e jovem"><span>Divertido e jovem</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Por qual canal gostaria de receber novidades? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <div class="opcoes-grupo" data-name="canal_comunicacao" data-type="checkbox">
+            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="Instagram"><span>Instagram</span></label>
+            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="WhatsApp"><span>WhatsApp</span></label>
+            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="E-mail"><span>E-mail</span></label>
+            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="TikTok"><span>TikTok</span></label>
+            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="Nao quero"><span>Nao quero</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOCO 7: Fechamento -->
+      <div class="bloco">
+        <h2>Quase la!</h2>
+
+        <div class="campo">
+          <label>Quer ser avisado quando lancarmos? <span class="obrigatorio">*</span></label>
+          <div class="opcoes-grupo" data-name="quer_aviso" data-type="radio">
+            <label class="opcao-radio"><input type="radio" name="quer_aviso" value="Sim"><span>Sim!</span></label>
+            <label class="opcao-radio"><input type="radio" name="quer_aviso" value="Nao"><span>Nao</span></label>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="nome">Nome <small>(opcional)</small></label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome">
+        </div>
+
+        <div class="campo">
+          <label for="contato">WhatsApp ou e-mail <small>(opcional)</small></label>
+          <input type="text" id="contato" name="contato" placeholder="Ex: (11) 99999-0000 ou email@exemplo.com">
+        </div>
+
+        <div class="campo">
+          <label for="comentarios">Comentarios <small>(opcional)</small></label>
+          <textarea id="comentarios" name="comentarios" placeholder="Algo mais que gostaria de compartilhar?"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-enviar" id="btn-enviar">Enviar Respostas</button>
+    </form>
+
+    <div class="mensagem-sucesso" id="mensagem-sucesso">
+      <h2>Obrigado!</h2>
+      <p>Sua resposta foi registrada com sucesso. Voce esta nos ajudando a criar algo incrivel!</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('formulario');
+    const btnEnviar = document.getElementById('btn-enviar');
+    const msgSucesso = document.getElementById('mensagem-sucesso');
+
+    const CAMPOS_RADIO = [
+      'faixa_etaria', 'pessoas_casa', 'renda_familiar',
+      'frequencia_compra', 'quantidade_ovos', 'gasto_mensal',
+      'usou_assinatura', 'interesse_assinatura', 'frequencia_entrega', 'tamanho_kit',
+      'preco_duzia', 'frete_aceitavel',
+      'conceito_marca', 'quer_aviso'
+    ];
+
+    const CAMPOS_CHECK = ['onde_compra', 'frustracao', 'importancia', 'canal_comunicacao'];
+
+    const CAMPOS_TEXTO_OBR = ['cidade'];
+
+    function coletarDados() {
+      const dados = {};
+
+      CAMPOS_RADIO.forEach(nome => {
+        const selecionado = form.querySelector(`input[name="${nome}"]:checked`);
+        dados[nome] = selecionado ? selecionado.value : '';
+      });
+
+      CAMPOS_CHECK.forEach(nome => {
+        const marcados = form.querySelectorAll(`input[name="${nome}"]:checked`);
+        dados[nome] = Array.from(marcados).map(el => el.value);
+      });
+
+      dados.cidade = form.querySelector('#cidade').value.trim();
+      dados.nome = form.querySelector('#nome').value.trim() || null;
+      dados.contato = form.querySelector('#contato').value.trim() || null;
+      dados.comentarios = form.querySelector('#comentarios').value.trim() || null;
+
+      return dados;
+    }
+
+    function validar(dados) {
+      const erros = [];
+
+      // Limpar erros anteriores
+      form.querySelectorAll('.erro-texto').forEach(el => el.remove());
+      form.querySelectorAll('.erro-campo').forEach(el => el.classList.remove('erro-campo'));
+
+      CAMPOS_RADIO.forEach(nome => {
+        if (!dados[nome]) {
+          erros.push(nome);
+          const grupo = form.querySelector(`.opcoes-grupo[data-name="${nome}"]`);
+          if (grupo) {
+            grupo.classList.add('erro-campo');
+            const msg = document.createElement('div');
+            msg.className = 'erro-texto';
+            msg.textContent = 'Selecione uma opcao';
+            grupo.parentElement.appendChild(msg);
+          }
+        }
+      });
+
+      CAMPOS_CHECK.forEach(nome => {
+        if (!dados[nome] || dados[nome].length === 0) {
+          erros.push(nome);
+          const grupo = form.querySelector(`.opcoes-grupo[data-name="${nome}"]`);
+          if (grupo) {
+            grupo.classList.add('erro-campo');
+            const msg = document.createElement('div');
+            msg.className = 'erro-texto';
+            msg.textContent = 'Selecione ao menos uma opcao';
+            grupo.parentElement.appendChild(msg);
+          }
+        }
+      });
+
+      CAMPOS_TEXTO_OBR.forEach(nome => {
+        if (!dados[nome]) {
+          erros.push(nome);
+          const campo = form.querySelector(`#${nome}`);
+          if (campo) {
+            campo.classList.add('erro-campo');
+            const msg = document.createElement('div');
+            msg.className = 'erro-texto';
+            msg.textContent = 'Campo obrigatorio';
+            campo.parentElement.appendChild(msg);
+          }
+        }
+      });
+
+      return erros;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const dados = coletarDados();
+      const erros = validar(dados);
+
+      if (erros.length > 0) {
+        const primeiro = form.querySelector(`.opcoes-grupo[data-name="${erros[0]}"], #${erros[0]}`);
+        if (primeiro) primeiro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      btnEnviar.disabled = true;
+      btnEnviar.textContent = 'Enviando...';
+
+      try {
+        const res = await fetch('http://localhost:3000/resposta', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dados)
+        });
+
+        if (!res.ok) {
+          const erro = await res.json();
+          throw new Error(erro.erro || 'Erro ao enviar');
+        }
+
+        form.style.display = 'none';
+        msgSucesso.style.display = 'block';
+        msgSucesso.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        alert('Erro ao enviar: ' + err.message);
+        btnEnviar.disabled = false;
+        btnEnviar.textContent = 'Enviar Respostas';
+      }
+    });
+  </script>
+</body>
+</html>
