@@ -290,7 +290,7 @@
       btn.textContent = 'Carregando...';
 
       try {
-        const res = await fetch('http://localhost:3000/respostas');
+        const res = await fetch('https://formulario-ovo-production.up.railway.app/respostas');
         if (!res.ok) throw new Error('Erro ao buscar dados');
         const dados = await res.json();
 
