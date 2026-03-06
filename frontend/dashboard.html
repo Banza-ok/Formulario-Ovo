@@ -201,6 +201,15 @@
   </div>
 
   <script>
+
+    const senhaCorreta = "ovos2025";
+
+const senhaDigitada = prompt("Digite a senha para acessar o dashboard:");
+
+if (senhaDigitada !== senhaCorreta) {
+  document.body.innerHTML = "<h2 style='color:red; text-align:center; margin-top:40vh'>Acesso negado.</h2>";
+  throw new Error("Acesso negado");
+}
     const CORES = [
       '#e94560', '#0f3460', '#533483', '#e9a045',
       '#45e980', '#4590e9', '#e945d4', '#45e9d4',

@@ -4,89 +4,306 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pesquisa - Ovos por Assinatura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --cream: #FAF5EB;
+      --white: #FFFDF8;
+      --amber: #D4890A;
+      --amber-light: #E8A020;
+      --green: #3A5A32;
+      --green-light: #4A6F3E;
+      --brown: #2C1810;
+      --brown-mid: #5C3D2E;
+      --border: #D6CABB;
+      --border-light: #E8DFD0;
+      --text-muted: #8A7660;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #fdfaf6;
-      color: #3a2e1f;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--brown);
       line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* ===================================================
+       HERO BANNER — editorial, bold, color-blocked
+       =================================================== */
+    .banner {
+      background: var(--brown);
+      color: var(--cream);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banner-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      min-height: 340px;
+    }
+
+    .banner-text {
+      padding: 60px 40px 60px 40px;
+    }
+
+    .banner-kicker {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3.5px;
+      color: var(--amber);
+      border: 1.5px solid var(--amber);
+      padding: 5px 14px;
+      margin-bottom: 24px;
+    }
+
+    .banner h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .banner h1 em {
+      font-style: normal;
+      color: var(--amber);
+    }
+
+    .banner-desc {
+      font-size: 0.95rem;
+      color: #B8A898;
+      max-width: 420px;
+      line-height: 1.65;
+    }
+
+    .banner-desc strong {
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    .banner-accent {
+      background: var(--amber);
+      width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 40px 20px;
+      text-align: center;
+      align-self: stretch;
+    }
+
+    .banner-accent-valor {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3.2rem;
+      color: var(--brown);
+      line-height: 1;
+    }
+
+    .banner-accent-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--brown);
+      margin-top: 6px;
+      opacity: 0.7;
+    }
+
+    .banner-accent-sub {
+      font-size: 0.72rem;
+      color: var(--brown);
+      margin-top: 14px;
+      line-height: 1.4;
+      opacity: 0.6;
+    }
+
+    /* ===================================================
+       PROGRESS BAR — thin, precise
+       =================================================== */
+    .progresso-container {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 245, 235, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .progresso-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 24px;
+    }
+
+    .progresso-texto {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .progresso-barra {
+      flex: 1;
+      height: 3px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .progresso-fill {
+      height: 100%;
+      background: var(--amber);
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .progresso-pct {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--amber);
+      min-width: 30px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===================================================
+       CONTAINER
+       =================================================== */
     .container {
       max-width: 680px;
       margin: 0 auto;
-      padding: 40px 20px 60px;
+      padding: 40px 24px 80px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 40px;
+    /* ===================================================
+       SECTIONS — sharp, editorial cards
+       =================================================== */
+    .secao {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 36px 32px;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(28px);
     }
 
-    header h1 {
-      font-size: 2rem;
-      color: #c2703a;
-      margin-bottom: 8px;
+    .secao.visivel {
+      animation: fadeUp 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
 
-    header p {
-      font-size: 1rem;
-      color: #7a6b5d;
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .bloco {
-      background: #fff;
-      border-radius: 12px;
-      padding: 28px 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    .secao-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 32px;
     }
 
-    .bloco h2 {
-      font-size: 1.1rem;
-      color: #c2703a;
-      margin-bottom: 20px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #f5e6d3;
+    .secao-numero {
+      font-family: 'DM Serif Display', serif;
+      font-size: 0.85rem;
+      color: var(--amber);
+      background: none;
+      min-width: 20px;
     }
 
+    .secao-numero::before {
+      content: '0';
+    }
+
+    .secao-titulo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--brown);
+      position: relative;
+    }
+
+    .secao-titulo::after {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: var(--amber);
+      margin-top: 10px;
+    }
+
+    /* ===================================================
+       FIELDS
+       =================================================== */
     .campo {
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
 
     .campo:last-child {
       margin-bottom: 0;
     }
 
-    label {
+    .campo-label {
       display: block;
       font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      color: var(--brown);
+      letter-spacing: 0.1px;
     }
 
-    label .obrigatorio {
-      color: #e05555;
-      margin-left: 2px;
+    .campo-label .req {
+      color: var(--amber);
+      margin-left: 3px;
     }
 
-    select, input[type="text"], textarea {
+    .campo-label small {
+      color: var(--text-muted);
+      font-weight: 400;
+      font-size: 0.78rem;
+    }
+
+    input[type="text"], textarea {
       width: 100%;
-      padding: 10px 14px;
-      border: 2px solid #e8ddd0;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      background: #fdfaf6;
-      color: #3a2e1f;
-      transition: border-color 0.2s;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 1px;
+      font-size: 0.92rem;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--brown);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    select:focus, input[type="text"]:focus, textarea:focus {
+    input[type="text"]:focus, textarea:focus {
       outline: none;
-      border-color: #c2703a;
+      border-color: var(--amber);
+      box-shadow: 0 0 0 2px rgba(212, 137, 10, 0.1);
+    }
+
+    input[type="text"]::placeholder, textarea::placeholder {
+      color: #BFAE98;
+      font-style: italic;
     }
 
     textarea {
@@ -94,388 +311,598 @@
       min-height: 80px;
     }
 
+    /* ===================================================
+       PILLS — sharp, color-invert on select
+       =================================================== */
     .opcoes-grupo {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .opcao-radio, .opcao-check {
+    .pill {
       position: relative;
     }
 
-    .opcao-radio input, .opcao-check input {
+    .pill input {
       position: absolute;
       opacity: 0;
       width: 0;
       height: 0;
+      pointer-events: none;
     }
 
-    .opcao-radio span, .opcao-check span {
-      display: inline-block;
-      padding: 8px 16px;
-      border: 2px solid #e8ddd0;
-      border-radius: 8px;
+    .pill span {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 1px;
       cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-      background: #fff;
+      font-size: 0.84rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      background: var(--cream);
+      color: var(--brown-mid);
       user-select: none;
     }
 
-    .opcao-radio input:checked + span {
-      background: #c2703a;
-      color: #fff;
-      border-color: #c2703a;
+    .pill span:hover {
+      border-color: var(--brown);
+      color: var(--brown);
+      background: var(--white);
     }
 
-    .opcao-check input:checked + span {
-      background: #d4a574;
-      color: #fff;
-      border-color: #d4a574;
+    /* Radio selected: dark brown inversion */
+    .pill input:checked + span {
+      background: var(--brown);
+      color: var(--cream);
+      border-color: var(--brown);
     }
 
-    .opcao-radio span:hover, .opcao-check span:hover {
-      border-color: #c2703a;
+    /* Checkbox selected: green inversion */
+    .pill-check input:checked + span {
+      background: var(--green);
+      color: var(--cream);
+      border-color: var(--green);
     }
 
+    /* ===================================================
+       SUBMIT BUTTON — dark, sharp, confident
+       =================================================== */
     .btn-enviar {
       display: block;
       width: 100%;
-      padding: 16px;
-      background: #c2703a;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
+      padding: 18px 24px;
+      background: var(--brown);
+      color: var(--cream);
+      border: 2px solid var(--brown);
+      border-radius: 1px;
+      font-size: 0.85rem;
       font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
       cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 10px;
+      transition: all 0.25s ease;
+      position: relative;
+      margin-top: 8px;
     }
 
     .btn-enviar:hover {
-      background: #a85d2f;
+      background: transparent;
+      color: var(--brown);
     }
 
     .btn-enviar:disabled {
-      background: #ccc;
+      background: var(--border);
+      border-color: var(--border);
+      color: var(--text-muted);
       cursor: not-allowed;
     }
 
+    /* ===================================================
+       SUCCESS
+       =================================================== */
     .mensagem-sucesso {
       display: none;
       text-align: center;
-      padding: 40px 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 72px 32px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+    }
+
+    .sucesso-icon {
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 1.5rem;
+      color: var(--green);
     }
 
     .mensagem-sucesso h2 {
-      color: #4caf50;
-      font-size: 1.5rem;
+      font-family: 'DM Serif Display', serif;
+      color: var(--brown);
+      font-size: 2rem;
+      font-weight: 400;
       margin-bottom: 12px;
     }
 
     .mensagem-sucesso p {
-      color: #7a6b5d;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 380px;
+      margin: 0 auto;
+      line-height: 1.65;
     }
 
+    /* ===================================================
+       ERRORS
+       =================================================== */
     .erro-campo {
-      border-color: #e05555 !important;
+      border-color: #A63225 !important;
     }
 
     .erro-texto {
-      color: #e05555;
-      font-size: 0.82rem;
-      margin-top: 4px;
+      color: #A63225;
+      font-size: 0.76rem;
+      margin-top: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    @media (max-width: 600px) {
-      .container { padding: 20px 14px 40px; }
-      header h1 { font-size: 1.5rem; }
-      .bloco { padding: 20px 16px; }
+    /* ===================================================
+       FOOTER
+       =================================================== */
+    .footer-marca {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-top: 1px solid var(--border);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ===================================================
+       RESPONSIVE
+       =================================================== */
+    @media (max-width: 640px) {
+      .banner-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .banner-text {
+        padding: 44px 24px 32px;
+      }
+
+      .banner-accent {
+        width: 100%;
+        flex-direction: row;
+        gap: 16px;
+        padding: 24px;
+      }
+
+      .banner-accent-sub {
+        margin-top: 0;
+        margin-left: 16px;
+        text-align: left;
+      }
+
+      .container {
+        padding: 24px 16px 60px;
+      }
+
+      .secao {
+        padding: 28px 20px;
+      }
+
+      .secao-titulo {
+        font-size: 1.2rem;
+      }
+
+      .pill span {
+        padding: 9px 14px;
+        font-size: 0.82rem;
+      }
+
+      .banner h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Pesquisa: Ovos por Assinatura</h1>
-      <p>Nos ajude a criar o melhor serviço de entrega de ovos frescos para voce. Leva menos de 3 minutos!</p>
-    </header>
 
+  <!-- ============ HERO BANNER ============ -->
+  <div class="banner">
+    <div class="banner-inner">
+      <div class="banner-text">
+        <div class="banner-kicker">Sorteio Exclusivo</div>
+        <h1>Responda e concorra a <em>R$500 no Pix</em></h1>
+        <p class="banner-desc">Queremos criar o melhor serviço de entrega de <strong>ovos frescos</strong> por assinatura. Sua opinião vale ouro &mdash; e pode valer quinhentos reais.</p>
+      </div>
+      <div class="banner-accent">
+        <div class="banner-accent-valor">R$500</div>
+        <div class="banner-accent-label">no Pix</div>
+        <div class="banner-accent-sub">Sorteio entre todos que completarem</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PROGRESS BAR ============ -->
+  <div class="progresso-container">
+    <div class="progresso-inner">
+      <span class="progresso-texto">Progresso</span>
+      <div class="progresso-barra">
+        <div class="progresso-fill" id="progresso-fill"></div>
+      </div>
+      <span class="progresso-pct" id="progresso-pct">0%</span>
+    </div>
+  </div>
+
+  <div class="container">
     <form id="formulario">
 
-      <!-- BLOCO 1: Perfil -->
-      <div class="bloco">
-        <h2>Sobre voce</h2>
+      <!-- SECAO 1: Perfil -->
+      <div class="secao" data-secao="1">
+        <div class="secao-header">
+          <div class="secao-numero">1</div>
+          <div class="secao-titulo">Sobre você</div>
+        </div>
 
         <div class="campo">
-          <label>Faixa etaria <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Faixa etária <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="faixa_etaria" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="18-24"><span>18-24</span></label>
-            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="25-34"><span>25-34</span></label>
-            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="35-44"><span>35-44</span></label>
-            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="45-54"><span>45-54</span></label>
-            <label class="opcao-radio"><input type="radio" name="faixa_etaria" value="55+"><span>55+</span></label>
+            <label class="pill"><input type="radio" name="faixa_etaria" value="18-24"><span>18-24</span></label>
+            <label class="pill"><input type="radio" name="faixa_etaria" value="25-34"><span>25-34</span></label>
+            <label class="pill"><input type="radio" name="faixa_etaria" value="35-44"><span>35-44</span></label>
+            <label class="pill"><input type="radio" name="faixa_etaria" value="45-54"><span>45-54</span></label>
+            <label class="pill"><input type="radio" name="faixa_etaria" value="55+"><span>55+</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label for="cidade">Cidade <span class="obrigatorio">*</span></label>
-          <input type="text" id="cidade" name="cidade" placeholder="Ex: Sao Paulo">
+          <label class="campo-label" for="bairro">Bairro <span class="req">*</span></label>
+          <input type="text" id="bairro" name="bairro" placeholder="Ex: Pinheiros, Centro, Boa Viagem...">
         </div>
 
         <div class="campo">
-          <label>Quantas pessoas moram na sua casa? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Quantas pessoas moram na sua casa? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="pessoas_casa" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="1"><span>1</span></label>
-            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="2"><span>2</span></label>
-            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="3-4"><span>3-4</span></label>
-            <label class="opcao-radio"><input type="radio" name="pessoas_casa" value="5+"><span>5+</span></label>
-          </div>
-        </div>
-
-        <div class="campo">
-          <label>Renda familiar <span class="obrigatorio">*</span></label>
-          <div class="opcoes-grupo" data-name="renda_familiar" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="Ate R$3k"><span>Ate R$3k</span></label>
-            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="R$3k-6k"><span>R$3k-6k</span></label>
-            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="R$6k-10k"><span>R$6k-10k</span></label>
-            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="Acima de R$10k"><span>Acima de R$10k</span></label>
-            <label class="opcao-radio"><input type="radio" name="renda_familiar" value="Prefiro nao informar"><span>Prefiro nao informar</span></label>
+            <label class="pill"><input type="radio" name="pessoas_casa" value="1"><span>1</span></label>
+            <label class="pill"><input type="radio" name="pessoas_casa" value="2"><span>2</span></label>
+            <label class="pill"><input type="radio" name="pessoas_casa" value="3-4"><span>3-4</span></label>
+            <label class="pill"><input type="radio" name="pessoas_casa" value="5+"><span>5+</span></label>
           </div>
         </div>
       </div>
 
-      <!-- BLOCO 2: Habitos -->
-      <div class="bloco">
-        <h2>Seus habitos com ovos</h2>
+      <!-- SECAO 2: Habitos -->
+      <div class="secao" data-secao="2">
+        <div class="secao-header">
+          <div class="secao-numero">2</div>
+          <div class="secao-titulo">Seus hábitos com ovos</div>
+        </div>
 
         <div class="campo">
-          <label>Com que frequencia voce compra ovos? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Com que frequência você compra ovos? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="frequencia_compra" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="Toda semana"><span>Toda semana</span></label>
-            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="A cada 2 semanas"><span>A cada 2 semanas</span></label>
-            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="Mensalmente"><span>Mensalmente</span></label>
-            <label class="opcao-radio"><input type="radio" name="frequencia_compra" value="Raramente"><span>Raramente</span></label>
+            <label class="pill"><input type="radio" name="frequencia_compra" value="Toda semana"><span>Toda semana</span></label>
+            <label class="pill"><input type="radio" name="frequencia_compra" value="A cada 2 semanas"><span>A cada 2 semanas</span></label>
+            <label class="pill"><input type="radio" name="frequencia_compra" value="Mensalmente"><span>Mensalmente</span></label>
+            <label class="pill"><input type="radio" name="frequencia_compra" value="Raramente"><span>Raramente</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label>Quantos ovos consome por semana? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Quantos ovos consome por semana? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="quantidade_ovos" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="Menos de 6"><span>Menos de 6</span></label>
-            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="6-12"><span>6-12</span></label>
-            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="13-24"><span>13-24</span></label>
-            <label class="opcao-radio"><input type="radio" name="quantidade_ovos" value="Mais de 24"><span>Mais de 24</span></label>
+            <label class="pill"><input type="radio" name="quantidade_ovos" value="Menos de 6"><span>Menos de 6</span></label>
+            <label class="pill"><input type="radio" name="quantidade_ovos" value="6-12"><span>6-12</span></label>
+            <label class="pill"><input type="radio" name="quantidade_ovos" value="13-24"><span>13-24</span></label>
+            <label class="pill"><input type="radio" name="quantidade_ovos" value="Mais de 24"><span>Mais de 24</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label>Onde voce compra ovos atualmente? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <label class="campo-label">Onde você compra ovos atualmente? <span class="req">*</span> <small>(múltipla escolha)</small></label>
           <div class="opcoes-grupo" data-name="onde_compra" data-type="checkbox">
-            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Supermercado grande"><span>Supermercado grande</span></label>
-            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Mercado de bairro"><span>Mercado de bairro</span></label>
-            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Feira livre"><span>Feira livre</span></label>
-            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Delivery"><span>Delivery</span></label>
-            <label class="opcao-check"><input type="checkbox" name="onde_compra" value="Direto do produtor"><span>Direto do produtor</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="onde_compra" value="Supermercado grande"><span>Supermercado grande</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="onde_compra" value="Mercado de bairro"><span>Mercado de bairro</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="onde_compra" value="Feira livre"><span>Feira livre</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="onde_compra" value="Delivery"><span>Delivery</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="onde_compra" value="Direto do produtor"><span>Direto do produtor</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label>Quanto gasta por mes com ovos? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Quanto gasta por mês com ovos? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="gasto_mensal" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="Ate R$20"><span>Ate R$20</span></label>
-            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="R$20-40"><span>R$20-40</span></label>
-            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="R$40-70"><span>R$40-70</span></label>
-            <label class="opcao-radio"><input type="radio" name="gasto_mensal" value="Mais de R$70"><span>Mais de R$70</span></label>
+            <label class="pill"><input type="radio" name="gasto_mensal" value="Até R$20"><span>Até R$20</span></label>
+            <label class="pill"><input type="radio" name="gasto_mensal" value="R$20-40"><span>R$20-40</span></label>
+            <label class="pill"><input type="radio" name="gasto_mensal" value="R$40-70"><span>R$40-70</span></label>
+            <label class="pill"><input type="radio" name="gasto_mensal" value="Mais de R$70"><span>Mais de R$70</span></label>
           </div>
         </div>
       </div>
 
-      <!-- BLOCO 3: Dores -->
-      <div class="bloco">
-        <h2>Suas dores e prioridades</h2>
+      <!-- SECAO 3: Dores -->
+      <div class="secao" data-secao="3">
+        <div class="secao-header">
+          <div class="secao-numero">3</div>
+          <div class="secao-titulo">Suas dores e prioridades</div>
+        </div>
 
         <div class="campo">
-          <label>Qual sua maior frustracao na compra de ovos? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <label class="campo-label">Qual sua maior frustração na compra de ovos? <span class="req">*</span> <small>(múltipla escolha)</small></label>
           <div class="opcoes-grupo" data-name="frustracao" data-type="checkbox">
-            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Esqueco de comprar"><span>Esqueco de comprar</span></label>
-            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Qualidade inconsistente"><span>Qualidade inconsistente</span></label>
-            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Nao sei a origem"><span>Nao sei a origem</span></label>
-            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Preco imprevisivel"><span>Preco imprevisivel</span></label>
-            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Falta de variedade"><span>Falta de variedade</span></label>
-            <label class="opcao-check"><input type="checkbox" name="frustracao" value="Nenhuma"><span>Nenhuma</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="frustracao" value="Esqueço de comprar"><span>Esqueço de comprar</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="frustracao" value="Qualidade inconsistente"><span>Qualidade inconsistente</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="frustracao" value="Não sei a origem"><span>Não sei a origem</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="frustracao" value="Preço imprevisível"><span>Preço imprevisível</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="frustracao" value="Falta de variedade"><span>Falta de variedade</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="frustracao" value="Nenhuma"><span>Nenhuma</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="frustracao" value="Outros" id="frustracao_outros_check"><span>Outros</span></label>
           </div>
+          <input type="text" id="frustracao_outros_texto" name="frustracao_outros_texto" placeholder="Descreva sua frustração..." style="display:none; margin-top: 10px;">
         </div>
 
         <div class="campo">
-          <label>O que mais importa ao escolher ovos? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <label class="campo-label">O que mais importa ao escolher ovos? <span class="req">*</span> <small>(múltipla escolha)</small></label>
           <div class="opcoes-grupo" data-name="importancia" data-type="checkbox">
-            <label class="opcao-check"><input type="checkbox" name="importancia" value="Preco"><span>Preco</span></label>
-            <label class="opcao-check"><input type="checkbox" name="importancia" value="Frescor"><span>Frescor</span></label>
-            <label class="opcao-check"><input type="checkbox" name="importancia" value="Origem"><span>Origem</span></label>
-            <label class="opcao-check"><input type="checkbox" name="importancia" value="Bem-estar animal"><span>Bem-estar animal</span></label>
-            <label class="opcao-check"><input type="checkbox" name="importancia" value="Organico"><span>Organico</span></label>
-            <label class="opcao-check"><input type="checkbox" name="importancia" value="Praticidade"><span>Praticidade</span></label>
-            <label class="opcao-check"><input type="checkbox" name="importancia" value="Embalagem sustentavel"><span>Embalagem sustentavel</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Preço"><span>Preço</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Frescor"><span>Frescor</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Origem"><span>Origem</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Bem-estar animal"><span>Bem-estar animal</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Orgânico"><span>Orgânico</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Praticidade"><span>Praticidade</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Embalagem sustentável"><span>Embalagem sustentável</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="importancia" value="Outros" id="importancia_outros_check"><span>Outros</span></label>
           </div>
+          <input type="text" id="importancia_outros_texto" name="importancia_outros_texto" placeholder="Descreva o que importa para você..." style="display:none; margin-top: 10px;">
         </div>
       </div>
 
-      <!-- BLOCO 4: Receptividade -->
-      <div class="bloco">
-        <h2>Assinatura de alimentos</h2>
+      <!-- SECAO 4: Receptividade -->
+      <div class="secao" data-secao="4">
+        <div class="secao-header">
+          <div class="secao-numero">4</div>
+          <div class="secao-titulo">Assinatura de alimentos</div>
+        </div>
 
         <div class="campo">
-          <label>Ja usou algum servico de assinatura de alimentos? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Já usou algum serviço de assinatura de alimentos? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="usou_assinatura" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Sim uso"><span>Sim, uso</span></label>
-            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Ja usei mas cancelei"><span>Ja usei mas cancelei</span></label>
-            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Nao mas tenho interesse"><span>Nao, mas tenho interesse</span></label>
-            <label class="opcao-radio"><input type="radio" name="usou_assinatura" value="Nao tenho interesse"><span>Nao tenho interesse</span></label>
+            <label class="pill"><input type="radio" name="usou_assinatura" value="Sim uso"><span>Sim, uso</span></label>
+            <label class="pill"><input type="radio" name="usou_assinatura" value="Já usei mas cancelei"><span>Já usei mas cancelei</span></label>
+            <label class="pill"><input type="radio" name="usou_assinatura" value="Não mas tenho interesse"><span>Não, mas tenho interesse</span></label>
+            <label class="pill"><input type="radio" name="usou_assinatura" value="Não tenho interesse"><span>Não tenho interesse</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label>Teria interesse em receber ovos por assinatura? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Teria interesse em receber ovos por assinatura? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="interesse_assinatura" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Sim"><span>Sim</span></label>
-            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Talvez"><span>Talvez</span></label>
-            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Provavelmente nao"><span>Provavelmente nao</span></label>
-            <label class="opcao-radio"><input type="radio" name="interesse_assinatura" value="Nao"><span>Nao</span></label>
+            <label class="pill"><input type="radio" name="interesse_assinatura" value="Sim"><span>Sim</span></label>
+            <label class="pill"><input type="radio" name="interesse_assinatura" value="Talvez"><span>Talvez</span></label>
+            <label class="pill"><input type="radio" name="interesse_assinatura" value="Provavelmente não"><span>Provavelmente não</span></label>
+            <label class="pill"><input type="radio" name="interesse_assinatura" value="Não"><span>Não</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label>Frequencia de entrega preferida <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Frequência de entrega preferida <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="frequencia_entrega" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Semanal"><span>Semanal</span></label>
-            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Quinzenal"><span>Quinzenal</span></label>
-            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Mensal"><span>Mensal</span></label>
-            <label class="opcao-radio"><input type="radio" name="frequencia_entrega" value="Quero escolher"><span>Quero escolher</span></label>
+            <label class="pill"><input type="radio" name="frequencia_entrega" value="Semanal"><span>Semanal</span></label>
+            <label class="pill"><input type="radio" name="frequencia_entrega" value="Quinzenal"><span>Quinzenal</span></label>
+            <label class="pill"><input type="radio" name="frequencia_entrega" value="Mensal"><span>Mensal</span></label>
+            <label class="pill"><input type="radio" name="frequencia_entrega" value="Quero escolher"><span>Quero escolher</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label>Tamanho do kit preferido <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Tamanho do kit preferido <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="tamanho_kit" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="6 ovos"><span>6 ovos</span></label>
-            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="12 ovos"><span>12 ovos</span></label>
-            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="30 ovos"><span>30 ovos</span></label>
-            <label class="opcao-radio"><input type="radio" name="tamanho_kit" value="Personalizado"><span>Personalizado</span></label>
+            <label class="pill"><input type="radio" name="tamanho_kit" value="6 ovos"><span>6 ovos</span></label>
+            <label class="pill"><input type="radio" name="tamanho_kit" value="12 ovos"><span>12 ovos</span></label>
+            <label class="pill"><input type="radio" name="tamanho_kit" value="30 ovos"><span>30 ovos</span></label>
+            <label class="pill"><input type="radio" name="tamanho_kit" value="Personalizado"><span>Personalizado</span></label>
           </div>
         </div>
       </div>
 
-      <!-- BLOCO 5: Preco -->
-      <div class="bloco">
-        <h2>Preco e frete</h2>
+      <!-- SECAO 5: Preco -->
+      <div class="secao" data-secao="5">
+        <div class="secao-header">
+          <div class="secao-numero">5</div>
+          <div class="secao-titulo">Preço</div>
+        </div>
 
         <div class="campo">
-          <label>Quanto pagaria por uma duzia entregue em casa? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Qual o preço justo que você acha por uma dúzia entregue em casa? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="preco_duzia" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="Ate R$10"><span>Ate R$10</span></label>
-            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="R$10-15"><span>R$10-15</span></label>
-            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="R$15-20"><span>R$15-20</span></label>
-            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="R$20-25"><span>R$20-25</span></label>
-            <label class="opcao-radio"><input type="radio" name="preco_duzia" value="Mais de R$25"><span>Mais de R$25</span></label>
-          </div>
-        </div>
-
-        <div class="campo">
-          <label>Um frete de R$5 seria aceitavel? <span class="obrigatorio">*</span></label>
-          <div class="opcoes-grupo" data-name="frete_aceitavel" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="frete_aceitavel" value="Sim"><span>Sim</span></label>
-            <label class="opcao-radio"><input type="radio" name="frete_aceitavel" value="Somente se gratis acima de certo valor"><span>Somente se gratis acima de certo valor</span></label>
-            <label class="opcao-radio"><input type="radio" name="frete_aceitavel" value="Nao pagaria frete"><span>Nao pagaria frete</span></label>
+            <label class="pill"><input type="radio" name="preco_duzia" value="Até R$10"><span>Até R$10</span></label>
+            <label class="pill"><input type="radio" name="preco_duzia" value="R$10-15"><span>R$10-15</span></label>
+            <label class="pill"><input type="radio" name="preco_duzia" value="R$15-20"><span>R$15-20</span></label>
+            <label class="pill"><input type="radio" name="preco_duzia" value="R$20-25"><span>R$20-25</span></label>
+            <label class="pill"><input type="radio" name="preco_duzia" value="Mais de R$25"><span>Mais de R$25</span></label>
           </div>
         </div>
       </div>
 
-      <!-- BLOCO 6: Branding -->
-      <div class="bloco">
-        <h2>Marca e comunicacao</h2>
+      <!-- SECAO 6: Branding -->
+      <div class="secao" data-secao="6">
+        <div class="secao-header">
+          <div class="secao-numero">6</div>
+          <div class="secao-titulo">Marca e comunicação</div>
+        </div>
 
         <div class="campo">
-          <label>Qual conceito de marca mais te atrai? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Qual conceito de marca mais te atrai? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="conceito_marca" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Natural e artesanal"><span>Natural e artesanal</span></label>
-            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Premium e sofisticado"><span>Premium e sofisticado</span></label>
-            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Sustentavel e consciente"><span>Sustentavel e consciente</span></label>
-            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Pratico e confiavel"><span>Pratico e confiavel</span></label>
-            <label class="opcao-radio"><input type="radio" name="conceito_marca" value="Divertido e jovem"><span>Divertido e jovem</span></label>
+            <label class="pill"><input type="radio" name="conceito_marca" value="Natural e artesanal"><span>Natural e artesanal</span></label>
+            <label class="pill"><input type="radio" name="conceito_marca" value="Premium e sofisticado"><span>Premium e sofisticado</span></label>
+            <label class="pill"><input type="radio" name="conceito_marca" value="Sustentável e consciente"><span>Sustentável e consciente</span></label>
+            <label class="pill"><input type="radio" name="conceito_marca" value="Prático e confiável"><span>Prático e confiável</span></label>
+            <label class="pill"><input type="radio" name="conceito_marca" value="Divertido e jovem"><span>Divertido e jovem</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label>Por qual canal gostaria de receber novidades? <span class="obrigatorio">*</span> <small>(multipla escolha)</small></label>
+          <label class="campo-label">Por qual canal gostaria de receber novidades? <span class="req">*</span> <small>(múltipla escolha)</small></label>
           <div class="opcoes-grupo" data-name="canal_comunicacao" data-type="checkbox">
-            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="Instagram"><span>Instagram</span></label>
-            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="WhatsApp"><span>WhatsApp</span></label>
-            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="E-mail"><span>E-mail</span></label>
-            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="TikTok"><span>TikTok</span></label>
-            <label class="opcao-check"><input type="checkbox" name="canal_comunicacao" value="Nao quero"><span>Nao quero</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="canal_comunicacao" value="Instagram"><span>Instagram</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="canal_comunicacao" value="WhatsApp"><span>WhatsApp</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="canal_comunicacao" value="E-mail"><span>E-mail</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="canal_comunicacao" value="TikTok"><span>TikTok</span></label>
+            <label class="pill pill-check"><input type="checkbox" name="canal_comunicacao" value="Não quero"><span>Não quero</span></label>
           </div>
         </div>
       </div>
 
-      <!-- BLOCO 7: Fechamento -->
-      <div class="bloco">
-        <h2>Quase la!</h2>
+      <!-- SECAO 7: Fechamento -->
+      <div class="secao" data-secao="7">
+        <div class="secao-header">
+          <div class="secao-numero">7</div>
+          <div class="secao-titulo">Quase lá!</div>
+        </div>
 
         <div class="campo">
-          <label>Quer ser avisado quando lancarmos? <span class="obrigatorio">*</span></label>
+          <label class="campo-label">Quer ser avisado quando lançarmos? <span class="req">*</span></label>
           <div class="opcoes-grupo" data-name="quer_aviso" data-type="radio">
-            <label class="opcao-radio"><input type="radio" name="quer_aviso" value="Sim"><span>Sim!</span></label>
-            <label class="opcao-radio"><input type="radio" name="quer_aviso" value="Nao"><span>Nao</span></label>
+            <label class="pill"><input type="radio" name="quer_aviso" value="Sim"><span>Sim!</span></label>
+            <label class="pill"><input type="radio" name="quer_aviso" value="Não"><span>Não</span></label>
           </div>
         </div>
 
         <div class="campo">
-          <label for="nome">Nome <small>(opcional)</small></label>
+          <label class="campo-label" for="nome">Nome <small>(opcional)</small></label>
           <input type="text" id="nome" name="nome" placeholder="Seu nome">
         </div>
 
         <div class="campo">
-          <label for="contato">WhatsApp ou e-mail <small>(opcional)</small></label>
+          <label class="campo-label" for="contato">WhatsApp ou e-mail <small>(opcional)</small></label>
           <input type="text" id="contato" name="contato" placeholder="Ex: (11) 99999-0000 ou email@exemplo.com">
         </div>
 
         <div class="campo">
-          <label for="comentarios">Comentarios <small>(opcional)</small></label>
+          <label class="campo-label" for="comentarios">Comentários <small>(opcional)</small></label>
           <textarea id="comentarios" name="comentarios" placeholder="Algo mais que gostaria de compartilhar?"></textarea>
         </div>
       </div>
 
-      <button type="submit" class="btn-enviar" id="btn-enviar">Enviar Respostas</button>
+      <button type="submit" class="btn-enviar" id="btn-enviar">Enviar e Concorrer ao Pix</button>
     </form>
 
     <div class="mensagem-sucesso" id="mensagem-sucesso">
+      <div class="sucesso-icon">&#10003;</div>
       <h2>Obrigado!</h2>
-      <p>Sua resposta foi registrada com sucesso. Voce esta nos ajudando a criar algo incrivel!</p>
+      <p>Sua resposta foi registrada com sucesso. Você já está concorrendo aos R$500 no Pix! Boa sorte!</p>
     </div>
   </div>
+
+  <div class="footer-marca">Pesquisa de mercado · Ovos por Assinatura</div>
 
   <script>
     const form = document.getElementById('formulario');
     const btnEnviar = document.getElementById('btn-enviar');
     const msgSucesso = document.getElementById('mensagem-sucesso');
+    const progressoFill = document.getElementById('progresso-fill');
+    const progressoPct = document.getElementById('progresso-pct');
+
+    const TOTAL_SECOES = 7;
 
     const CAMPOS_RADIO = [
-      'faixa_etaria', 'pessoas_casa', 'renda_familiar',
+      'faixa_etaria', 'pessoas_casa',
       'frequencia_compra', 'quantidade_ovos', 'gasto_mensal',
       'usou_assinatura', 'interesse_assinatura', 'frequencia_entrega', 'tamanho_kit',
-      'preco_duzia', 'frete_aceitavel',
+      'preco_duzia',
       'conceito_marca', 'quer_aviso'
     ];
 
     const CAMPOS_CHECK = ['onde_compra', 'frustracao', 'importancia', 'canal_comunicacao'];
 
-    const CAMPOS_TEXTO_OBR = ['cidade'];
+    const CAMPOS_TEXTO_OBR = ['bairro'];
+
+    // Scroll-triggered fade-up animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visivel');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06 });
+
+    document.querySelectorAll('.secao').forEach(sec => observer.observe(sec));
+
+    // Progress bar
+    function atualizarProgresso() {
+      const campoSecao = {
+        faixa_etaria: 1, bairro: 1, pessoas_casa: 1,
+        frequencia_compra: 2, quantidade_ovos: 2, onde_compra: 2, gasto_mensal: 2,
+        frustracao: 3, importancia: 3,
+        usou_assinatura: 4, interesse_assinatura: 4, frequencia_entrega: 4, tamanho_kit: 4,
+        preco_duzia: 5,
+        conceito_marca: 6, canal_comunicacao: 6,
+        quer_aviso: 7
+      };
+
+      const secaoCampos = {};
+      const secaoPreenchidos = {};
+
+      for (const [campo, secao] of Object.entries(campoSecao)) {
+        if (!secaoCampos[secao]) secaoCampos[secao] = 0;
+        if (!secaoPreenchidos[secao]) secaoPreenchidos[secao] = 0;
+        secaoCampos[secao]++;
+
+        let preenchido = false;
+        if (CAMPOS_RADIO.includes(campo)) {
+          preenchido = !!form.querySelector(`input[name="${campo}"]:checked`);
+        } else if (CAMPOS_CHECK.includes(campo)) {
+          preenchido = form.querySelectorAll(`input[name="${campo}"]:checked`).length > 0;
+        } else if (CAMPOS_TEXTO_OBR.includes(campo)) {
+          const el = form.querySelector(`#${campo}`);
+          preenchido = el && el.value.trim() !== '';
+        }
+
+        if (preenchido) secaoPreenchidos[secao]++;
+      }
+
+      let completadas = 0;
+      for (let s = 1; s <= TOTAL_SECOES; s++) {
+        if (secaoPreenchidos[s] && secaoPreenchidos[s] === secaoCampos[s]) {
+          completadas++;
+        }
+      }
+
+      const pct = Math.round((completadas / TOTAL_SECOES) * 100);
+      progressoFill.style.width = pct + '%';
+      progressoPct.textContent = pct + '%';
+    }
+
+    form.addEventListener('change', atualizarProgresso);
+    form.addEventListener('input', atualizarProgresso);
+
+    // Toggle "Outros" text fields
+    document.getElementById('frustracao_outros_check').addEventListener('change', function() {
+      document.getElementById('frustracao_outros_texto').style.display = this.checked ? 'block' : 'none';
+      if (!this.checked) document.getElementById('frustracao_outros_texto').value = '';
+    });
+
+    document.getElementById('importancia_outros_check').addEventListener('change', function() {
+      document.getElementById('importancia_outros_texto').style.display = this.checked ? 'block' : 'none';
+      if (!this.checked) document.getElementById('importancia_outros_texto').value = '';
+    });
 
     function coletarDados() {
       const dados = {};
@@ -490,10 +917,12 @@
         dados[nome] = Array.from(marcados).map(el => el.value);
       });
 
-      dados.cidade = form.querySelector('#cidade').value.trim();
+      dados.bairro = form.querySelector('#bairro').value.trim();
       dados.nome = form.querySelector('#nome').value.trim() || null;
       dados.contato = form.querySelector('#contato').value.trim() || null;
       dados.comentarios = form.querySelector('#comentarios').value.trim() || null;
+      dados.frustracao_outros_texto = form.querySelector('#frustracao_outros_texto').value.trim() || null;
+      dados.importancia_outros_texto = form.querySelector('#importancia_outros_texto').value.trim() || null;
 
       return dados;
     }
@@ -501,7 +930,6 @@
     function validar(dados) {
       const erros = [];
 
-      // Limpar erros anteriores
       form.querySelectorAll('.erro-texto').forEach(el => el.remove());
       form.querySelectorAll('.erro-campo').forEach(el => el.classList.remove('erro-campo'));
 
@@ -513,7 +941,7 @@
             grupo.classList.add('erro-campo');
             const msg = document.createElement('div');
             msg.className = 'erro-texto';
-            msg.textContent = 'Selecione uma opcao';
+            msg.textContent = 'Selecione uma opção';
             grupo.parentElement.appendChild(msg);
           }
         }
@@ -527,7 +955,7 @@
             grupo.classList.add('erro-campo');
             const msg = document.createElement('div');
             msg.className = 'erro-texto';
-            msg.textContent = 'Selecione ao menos uma opcao';
+            msg.textContent = 'Selecione ao menos uma opção';
             grupo.parentElement.appendChild(msg);
           }
         }
@@ -541,7 +969,7 @@
             campo.classList.add('erro-campo');
             const msg = document.createElement('div');
             msg.className = 'erro-texto';
-            msg.textContent = 'Campo obrigatorio';
+            msg.textContent = 'Campo obrigatório';
             campo.parentElement.appendChild(msg);
           }
         }
@@ -580,10 +1008,13 @@
         form.style.display = 'none';
         msgSucesso.style.display = 'block';
         msgSucesso.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        progressoFill.style.width = '100%';
+        progressoPct.textContent = '100%';
       } catch (err) {
         alert('Erro ao enviar: ' + err.message);
         btnEnviar.disabled = false;
-        btnEnviar.textContent = 'Enviar Respostas';
+        btnEnviar.textContent = 'Enviar e Concorrer ao Pix';
       }
     });
   </script>
